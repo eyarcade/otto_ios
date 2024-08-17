@@ -1,0 +1,38 @@
+Copyright (c) 2024, Upside Down Productions Corp.
+All rights reserved.
+
+OTTO License
+
+OTTO (the "Software") is licensed under the terms of this Non-Commercial Use License ("License"). By using, copying, or distributing the Software, you agree to the terms and conditions outlined in this License.
+
+
+1. Permitted Use
+You are free to:
+
+Use: Use the Software for personal, educational, or research purposes.
+Modify: Modify the Software for your own non-commercial use.
+Distribute: Share or distribute unmodified or modified versions of the Software, as long as it is for non-commercial purposes and this License is included.
+
+
+2. Restrictions
+You are not allowed to:
+
+Commercial Use: Use the Software for any commercial purpose, including but not limited to, selling, licensing, or monetizing the Software or any derivative works.
+Distribution for Profit: Distribute the Software or any derivative works in exchange for any monetary value or other commercial benefits.
+Remove License: Remove or alter any copyright, trademark, or other proprietary notices in the Software.
+Sublicense: Grant any rights or sublicenses to third parties that exceed the rights provided by this License.
+
+
+3. Attribution
+You must provide proper attribution when distributing or modifying the Software. This includes:
+
+Keeping this License intact in all copies or substantial portions of the Software.
+Providing credit to the original authors by linking to the source or providing the author's name.
+
+
+4. No Warranty
+The Software is provided "as is," without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software.
+
+
+5. Termination
+This License and the rights granted hereunder will terminate automatically if you violate any terms of this License. Upon termination, you must stop all use of the Software and destroy any copies of the Software in your possession.

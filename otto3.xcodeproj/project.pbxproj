@@ -16,6 +16,10 @@
 		4AA63B162C67C03200E8154B /* otto3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B152C67C03200E8154B /* otto3Tests.swift */; };
 		4AA63B202C67C03200E8154B /* otto3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B1F2C67C03200E8154B /* otto3UITests.swift */; };
 		4AA63B222C67C03200E8154B /* otto3UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B212C67C03200E8154B /* otto3UITestsLaunchTests.swift */; };
+		4AA63B312C67C1C300E8154B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B302C67C1C300E8154B /* CameraViewController.swift */; };
+		4AA63B332C67C1E500E8154B /* PhotoGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */; };
+		4AA63B352C67C20900E8154B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B342C67C20900E8154B /* MainViewController.swift */; };
+		4ABF43712C70E43300940ED7 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4ABF43702C70E43300940ED7 /* License.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +53,10 @@
 		4AA63B1B2C67C03200E8154B /* otto3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = otto3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AA63B1F2C67C03200E8154B /* otto3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = otto3UITests.swift; sourceTree = "<group>"; };
 		4AA63B212C67C03200E8154B /* otto3UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = otto3UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4AA63B302C67C1C300E8154B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewController.swift; sourceTree = "<group>"; };
+		4AA63B342C67C20900E8154B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		4ABF43702C70E43300940ED7 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,10 +110,14 @@
 				4AA63AFE2C67C02900E8154B /* AppDelegate.swift */,
 				4AA63B002C67C02900E8154B /* SceneDelegate.swift */,
 				4AA63B022C67C02900E8154B /* ViewController.swift */,
+				4AA63B342C67C20900E8154B /* MainViewController.swift */,
+				4AA63B302C67C1C300E8154B /* CameraViewController.swift */,
+				4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */,
 				4AA63B042C67C02900E8154B /* Main.storyboard */,
 				4AA63B072C67C03100E8154B /* Assets.xcassets */,
 				4AA63B092C67C03100E8154B /* LaunchScreen.storyboard */,
 				4AA63B0C2C67C03100E8154B /* Info.plist */,
+				4ABF43702C70E43300940ED7 /* License.txt */,
 			);
 			path = otto3;
 			sourceTree = "<group>";
@@ -231,6 +243,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ABF43712C70E43300940ED7 /* License.txt in Resources */,
 				4AA63B082C67C03100E8154B /* Assets.xcassets in Resources */,
 				4AA63B0B2C67C03100E8154B /* Base in Resources */,
 				4AA63B062C67C02900E8154B /* Base in Resources */,
@@ -259,8 +272,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AA63B032C67C02900E8154B /* ViewController.swift in Sources */,
+				4AA63B312C67C1C300E8154B /* CameraViewController.swift in Sources */,
 				4AA63AFF2C67C02900E8154B /* AppDelegate.swift in Sources */,
+				4AA63B352C67C20900E8154B /* MainViewController.swift in Sources */,
 				4AA63B012C67C02900E8154B /* SceneDelegate.swift in Sources */,
+				4AA63B332C67C1E500E8154B /* PhotoGalleryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
