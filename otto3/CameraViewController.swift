@@ -136,6 +136,11 @@ class CameraViewController: UIViewController {
     
 
     @objc func capturePhoto() {
+        
+        if galleryViewController?.isViewLoaded == false {
+                galleryViewController?.loadViewIfNeeded()
+            }
+        
         let settings = AVCapturePhotoSettings()
         if #available(iOS 16.0, *) {
             settings.maxPhotoDimensions = CMVideoDimensions(width: 4032, height: 3024)
@@ -216,13 +221,19 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         sendToTrafficEyeAPI(image: image) { [weak self] result in
             switch result {
             case .success(let vehicleInfo):
-                self?.galleryViewController?.addVehicleEntry(image: image, vehicleInfo: vehicleInfo)
+                DispatchQueue.main.async {
+                    guard let galleryVC = self?.galleryViewController else {
+                        print("GalleryViewController is not available")
+                        return
+                    }
+                    galleryVC.addVehicleEntry(image: image, vehicleInfo: vehicleInfo)
+                }
             case .failure(let error):
                 print("Failed to retrieve vehicle info: \(error)")
             }
         }
     }
-    
+
     
     func sendToTrafficEyeAPI(image: UIImage?, completion: @escaping (Result<(make: String, model: String, year: String), Error>) -> Void) {
         guard let image = image else { return }
@@ -232,11 +243,9 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         request.httpMethod = "POST"
         request.setValue("c5b0495563c33ea4a2ad91eb5f3b4bc08e416334e47e0cfc55290d32ebf850f0", forHTTPHeaderField: "apikey")
         
-        // Boundary for the multipart/form-data request
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        // HTTP body with image data
         var body = Data()
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"file\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
@@ -247,7 +256,6 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         
         request.httpBody = body
         
-        // Send request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 completion(.failure(error!))
@@ -262,16 +270,13 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
              }
              */
             
-            
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    // Check the status
                     guard let status = json["status"] as? Int, status == 200 else {
                         print("Failed to retrieve vehicle info: \(json["message"] ?? "Unknown error")")
                         return
                     }
                     
-                    // Navigate to the relevant parts of the JSON structure
                     if let data = json["data"] as? [String: Any],
                        let combinations = data["combinations"] as? [[String: Any]],
                        let firstCombination = combinations.first,
@@ -279,107 +284,14 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                        let firstRoadUser = roadUsers.first,
                        let mmr = firstRoadUser["mmr"] as? [String: Any] {
                         
-                        // Extract make, model, generation, and color
-                        if let make = mmr["make"] as? [String: Any],
-                           let makeValue = make["value"] as? String {
-                            print("Make: \(makeValue)")
-                        }
+                        // Extract the necessary vehicle information
+                        let make = (mmr["make"] as? [String: Any])?["value"] as? String ?? "Unknown"
+                        let model = (mmr["model"] as? [String: Any])?["value"] as? String ?? "Unknown"
+                        let year = (mmr["generation"] as? [String: Any])?["value"] as? String ?? "Unknown"
                         
-                        if let model = mmr["model"] as? [String: Any],
-                           let modelValue = model["value"] as? String {
-                            print("Model: \(modelValue)")
-                        }
-                        
-                        if let generation = mmr["generation"] as? [String: Any],
-                           let generationValue = generation["value"] as? String {
-                            print("Generation: \(generationValue)")
-                        }
-                        
-                        if let color = mmr["color"] as? [String: Any],
-                           let colorValue = color["value"] as? String {
-                            print("Color: \(colorValue)")
-                        }
+                        // Pass the extracted information to the completion handler
+                        completion(.success((make, model, year)))
                     }
-                    
-                    
-                    
-                }
-            } catch {
-                print("Failed to parse JSON: \(error)")
-            }
-            
-        }
-        task.resume()
-    }
-    
-}
-
-    /*
-    func sendToTrafficEyeAPI(image: UIImage?, completion: @escaping (Result<(make: String, model: String, year: String), Error>) -> Void) {
-        guard let image = image else { return }
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
-        let url = URL(string: "https://trafficeye.ai/recognition")! // Replace with actual API URL
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        // Add your API key in the headers
-        request.setValue("c5b0495563c33ea4a2ad91eb5f3b4bc08e416334e47e0cfc55290d32ebf850f0", forHTTPHeaderField: "apikey")
-        
-        // Create a boundary for the multipart/form-data request
-        let boundary = UUID().uuidString
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        // Construct the HTTP body with image data
-        var body = Data()
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(imageData)
-        body.append("\r\n".data(using: .utf8)!)
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        request.httpBody = body
-        
-        // Send the request
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(.failure(error!))
-                return
-            }
-            
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    // Check the status
-                    guard let status = json["status"] as? Int, status == 200 else {
-                        let errorMessage = json["message"] as? String ?? "Unknown error"
-                        completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
-                        return
-                    }
-
-                    // Navigate to the relevant parts of the JSON structure
-                    if let data = json["data"] as? [String: Any],
-                       let combinations = data["combinations"] as? [[String: Any]],
-                       let firstCombination = combinations.first,
-                       let roadUsers = firstCombination["roadUsers"] as? [[String: Any]],
-                       let firstRoadUser = roadUsers.first,
-                       let mmr = firstRoadUser["mmr"] as? [String: Any] {
-
-                        // Extract make, model, generation, and color
-                        let makeValue = (mmr["make"] as? [String: Any])?["value"] as? String ?? ""
-                        let modelValue = (mmr["model"] as? [String: Any])?["value"] as? String ?? ""
-                        let generationValue = (mmr["generation"] as? [String: Any])?["value"] as? String ?? ""
-                        let colorValue = (mmr["color"] as? [String: Any])?["value"] as? String ?? ""
-                        
-                        // Create a dictionary to cache the data
-                        let vehicleInfo = ["make": makeValue, "model": modelValue, "generation": generationValue, "color": colorValue]
-                        
-                        // Cache the data using UserDefaults (or another cache mechanism)
-                        UserDefaults.standard.set(vehicleInfo, forKey: "cachedVehicleInfo")
-                        
-                        // Pass the data to the completion handler
-                        completion(.success((make: makeValue, model: modelValue, year: generationValue)))
-                    }
-                    
                 }
             } catch {
                 completion(.failure(error))
@@ -388,10 +300,6 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         task.resume()
     }
 
+    
 }
 
-func retrieveCachedVehicleInfo() -> [String: String]? {
-    return UserDefaults.standard.dictionary(forKey: "cachedVehicleInfo") as? [String: String]
-}
-
-*/
