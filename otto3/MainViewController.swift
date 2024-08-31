@@ -10,8 +10,6 @@ import UIKit
 class MainViewController: UIPageViewController, UIPageViewControllerDataSource {
 
     var pages = [UIViewController]()
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,10 +20,12 @@ class MainViewController: UIPageViewController, UIPageViewControllerDataSource {
         // Link gallery to camera view controller
         cameraVC.galleryViewController = galleryVC
 
-        pages.append(cameraVC)
+        // Reverse the order to show the gallery first when swiping left
         pages.append(galleryVC)
+        pages.append(cameraVC)
 
-        setViewControllers([cameraVC], direction: .forward, animated: true, completion: nil)
+        // Set the initial view controller to CameraViewController with reverse direction
+        setViewControllers([cameraVC], direction: .reverse, animated: true, completion: nil)
         self.dataSource = self
     }
 
