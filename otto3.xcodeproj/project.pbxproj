@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A3CCF032C8394920088A0A5 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CCF022C8394920088A0A5 /* LoadingView.swift */; };
 		4AA63AFF2C67C02900E8154B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63AFE2C67C02900E8154B /* AppDelegate.swift */; };
 		4AA63B012C67C02900E8154B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B002C67C02900E8154B /* SceneDelegate.swift */; };
 		4AA63B032C67C02900E8154B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B022C67C02900E8154B /* ViewController.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4A3CCF022C8394920088A0A5 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		4AA63AFB2C67C02900E8154B /* otto3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = otto3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AA63AFE2C67C02900E8154B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AA63B002C67C02900E8154B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				4AA63B002C67C02900E8154B /* SceneDelegate.swift */,
 				4AA63B022C67C02900E8154B /* ViewController.swift */,
 				4AA63B342C67C20900E8154B /* MainViewController.swift */,
+				4A3CCF022C8394920088A0A5 /* LoadingView.swift */,
 				4AA63B302C67C1C300E8154B /* CameraViewController.swift */,
 				4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */,
 				4AA63B042C67C02900E8154B /* Main.storyboard */,
@@ -276,6 +279,7 @@
 				4AA63AFF2C67C02900E8154B /* AppDelegate.swift in Sources */,
 				4AA63B352C67C20900E8154B /* MainViewController.swift in Sources */,
 				4AA63B012C67C02900E8154B /* SceneDelegate.swift in Sources */,
+				4A3CCF032C8394920088A0A5 /* LoadingView.swift in Sources */,
 				4AA63B332C67C1E500E8154B /* PhotoGalleryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

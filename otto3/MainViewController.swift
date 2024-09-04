@@ -10,6 +10,9 @@ import UIKit
 class MainViewController: UIPageViewController, UIPageViewControllerDataSource {
 
     var pages = [UIViewController]()
+    
+    // Loading screen for user until API response appears
+    private var loadingView: LoadingView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,12 +22,15 @@ class MainViewController: UIPageViewController, UIPageViewControllerDataSource {
         
         // Link gallery to camera view controller
         cameraVC.galleryViewController = galleryVC
+        
+        // Reference to MainViewController in CameraViewController
+        cameraVC.mainViewController = self
 
-        // Reverse the order to show the gallery first when swiping left
+        // View Vehicle Gallery when swiping left
         pages.append(galleryVC)
         pages.append(cameraVC)
 
-        // Set the initial view controller to CameraViewController with reverse direction
+        // Initial view controller - CameraViewController
         setViewControllers([cameraVC], direction: .reverse, animated: true, completion: nil)
         self.dataSource = self
     }
@@ -55,8 +61,26 @@ class MainViewController: UIPageViewController, UIPageViewControllerDataSource {
         return pages[nextIndex]
     }
 
-    // Orientation Control
+    func showLoadingScreen() {
+        loadingView = LoadingView(frame: view.bounds)
+        if let loadingView = loadingView {
+            view.addSubview(loadingView)
+            loadingView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+                loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        }
+    }
 
+    func hideLoadingScreen() {
+        loadingView?.removeFromSuperview()
+        loadingView = nil
+    }
+
+    // Orientation Control
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }

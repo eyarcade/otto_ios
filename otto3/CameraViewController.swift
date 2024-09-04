@@ -12,12 +12,17 @@ class CameraViewController: UIViewController {
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
     var capturePhotoOutput: AVCapturePhotoOutput!
-    var focusIndicator: UIView!  // Focus indicator view
+    var focusIndicator: UIView!
+    var flashView: UIView!
+    
     
     // Reference to the Photo Gallery View Controller
     var galleryViewController: PhotoGalleryViewController?
     
-    // Define the maximum zoom factor
+    // Reference to the Main View Controller for loading screen management
+    weak var mainViewController: MainViewController?
+    
+    // Max zoom factor so the quality of image is high enough for API
     private let maximumZoomFactor: CGFloat = 5.0
 
     override func viewDidLoad() {
@@ -25,7 +30,8 @@ class CameraViewController: UIViewController {
         setupCamera()
         setupCaptureButton()
         setupFocusIndicator()
-        setupPinchGesture() // Set up pinch gestures for zooming in/out
+        setupPinchGesture() // Pinch gestures for zooming in/out
+        setupFlashView()  // Flash screen to indicate picture has been taken
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleFocusTap(_:)))
         view.addGestureRecognizer(tapGesture)
@@ -39,6 +45,7 @@ class CameraViewController: UIViewController {
         return .portrait
     }
 
+    // Prevent screen from auto-rotating
     override var shouldAutorotate: Bool {
         return false
     }
@@ -49,7 +56,6 @@ class CameraViewController: UIViewController {
         }
 
     @objc func handlePinch(_ gesture: UIPinchGestureRecognizer) {
-            // Get the device from the first input
             guard let deviceInput = captureSession.inputs.first(where: { $0 is AVCaptureDeviceInput }) as? AVCaptureDeviceInput else { return }
             let device = deviceInput.device
             
@@ -113,6 +119,14 @@ class CameraViewController: UIViewController {
         focusIndicator.alpha = 0
         view.addSubview(focusIndicator)
     }
+    
+    // Flash screen to indicate user has taken a picture
+    func setupFlashView() {
+            flashView = UIView(frame: view.bounds)
+            flashView.backgroundColor = UIColor.black
+            flashView.alpha = 0
+            view.addSubview(flashView)
+        }
 
     func setupCaptureButton() {
         let buttonSize: CGFloat = 80
@@ -132,24 +146,36 @@ class CameraViewController: UIViewController {
             captureButton.center = CGPoint(x: view.frame.width / 2, y: view.frame.height - captureButton.frame.height / 2 - 40)
         }
     }
-    
-    
 
     @objc func capturePhoto() {
-        
-        if galleryViewController?.isViewLoaded == false {
+            if galleryViewController?.isViewLoaded == false {
                 galleryViewController?.loadViewIfNeeded()
             }
+            
+            let settings = AVCapturePhotoSettings()
+            if #available(iOS 16.0, *) {
+                settings.maxPhotoDimensions = CMVideoDimensions(width: 4032, height: 3024)
+            } else {
+                settings.isHighResolutionPhotoEnabled = true
+            }
+            settings.flashMode = .auto
+            capturePhotoOutput.capturePhoto(with: settings, delegate: self)
+            
+            flashScreen()
         
-        let settings = AVCapturePhotoSettings()
-        if #available(iOS 16.0, *) {
-            settings.maxPhotoDimensions = CMVideoDimensions(width: 4032, height: 3024)
-        } else {
-            settings.isHighResolutionPhotoEnabled = true
+            // Show loading screen after user has captured image
+            mainViewController?.showLoadingScreen()
         }
-        settings.flashMode = .auto
-        capturePhotoOutput.capturePhoto(with: settings, delegate: self)
-    }
+    
+    func flashScreen() {
+            UIView.animate(withDuration: 0.0, animations: {
+                self.flashView.alpha = 1
+            }) { _ in
+                UIView.animate(withDuration: 0.2, delay: 0.0, options: [], animations: {
+                    self.flashView.alpha = 0
+                })
+            }
+        }
 
     // Make focus indicator "bounce" before fading out
     @objc func handleFocusTap(_ gestureRecognizer: UITapGestureRecognizer) {
@@ -210,28 +236,39 @@ class CameraViewController: UIViewController {
             print("Error setting focus and exposure: \(error.localizedDescription)")
         }
     }
+    
+    
 }
 
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        guard let imageData = photo.fileDataRepresentation() else { return }
+        
+        
+        guard let imageData = photo.fileDataRepresentation() else {
+                mainViewController?.hideLoadingScreen()  // Hide loading screen if there's an error processing the photo
+                return
+            }
+        
         let image = UIImage(data: imageData)
         
         // Send image to TrafficEye API
         sendToTrafficEyeAPI(image: image) { [weak self] result in
-            switch result {
-            case .success(let vehicleInfo):
                 DispatchQueue.main.async {
-                    guard let galleryVC = self?.galleryViewController else {
-                        print("GalleryViewController is not available")
-                        return
+                    self?.mainViewController?.hideLoadingScreen()  // Hide loading screen after processing the result
+                    
+                    switch result {
+                    case .success(let vehicleInfo):
+                        guard let galleryVC = self?.galleryViewController else {
+                            print("GalleryViewController is not available")
+                            return
+                        }
+                        galleryVC.addVehicleEntry(image: image, vehicleInfo: vehicleInfo)
+                    case .failure(let error):
+                        print("Failed to retrieve vehicle info: \(error)")
                     }
-                    galleryVC.addVehicleEntry(image: image, vehicleInfo: vehicleInfo)
                 }
-            case .failure(let error):
-                print("Failed to retrieve vehicle info: \(error)")
             }
-        }
+        
     }
 
     
@@ -263,7 +300,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             }
             
             /*
-             // Raw response data
+             // Test raw response data
              
              if let rawDataString = String(data: data, encoding: .utf8) {
              print("Raw Response: \(rawDataString)")

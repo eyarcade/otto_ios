@@ -22,18 +22,17 @@ class PhotoGalleryCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
         label.textAlignment = .left
-        label.textColor = .black // Set font color to black
+        label.textColor = .black
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        // Add subviews to the content view of the cell
         contentView.addSubview(imageView)
         contentView.addSubview(infoLabel)
         
-        // Set up constraints for imageView and infoLabel
+        // Constraints for imageView and infoLabel
         imageView.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -127,4 +126,6 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             self.collectionView?.reloadData()
         }
     }
+    
+    
 }
