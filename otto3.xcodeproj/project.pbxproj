@@ -21,6 +21,7 @@
 		4AA63B332C67C1E500E8154B /* PhotoGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */; };
 		4AA63B352C67C20900E8154B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA63B342C67C20900E8154B /* MainViewController.swift */; };
 		4ABF43712C70E43300940ED7 /* License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4ABF43702C70E43300940ED7 /* License.txt */; };
+		4AD471172C88F67800406765 /* CustomUIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD471162C88F67800406765 /* CustomUIComponents.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewController.swift; sourceTree = "<group>"; };
 		4AA63B342C67C20900E8154B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4ABF43702C70E43300940ED7 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
+		4AD471162C88F67800406765 /* CustomUIComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIComponents.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				4AA63B022C67C02900E8154B /* ViewController.swift */,
 				4AA63B342C67C20900E8154B /* MainViewController.swift */,
 				4A3CCF022C8394920088A0A5 /* LoadingView.swift */,
+				4AD471162C88F67800406765 /* CustomUIComponents.swift */,
 				4AA63B302C67C1C300E8154B /* CameraViewController.swift */,
 				4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */,
 				4AA63B042C67C02900E8154B /* Main.storyboard */,
@@ -276,6 +279,7 @@
 			files = (
 				4AA63B032C67C02900E8154B /* ViewController.swift in Sources */,
 				4AA63B312C67C1C300E8154B /* CameraViewController.swift in Sources */,
+				4AD471172C88F67800406765 /* CustomUIComponents.swift in Sources */,
 				4AA63AFF2C67C02900E8154B /* AppDelegate.swift in Sources */,
 				4AA63B352C67C20900E8154B /* MainViewController.swift in Sources */,
 				4AA63B012C67C02900E8154B /* SceneDelegate.swift in Sources */,

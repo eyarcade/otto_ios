@@ -17,9 +17,9 @@ class PhotoGalleryCell: UICollectionViewCell {
         return imageView
     }()
     
-    let infoLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+    let infoLabel: CustomLabel = {
+        let label = CustomLabel()
+        //label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
         label.textAlignment = .left
         label.textColor = .black
@@ -67,9 +67,9 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     }
     
     func setupHeadingLabel() {
-        let headingLabel = UILabel()
-        headingLabel.text = NSLocalizedString("Vehicles", comment: "Heading for the vehicles section")
-        headingLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        let headingLabel = CustomLabel()
+        headingLabel.text = NSLocalizedString("VEHICLES", comment: "Heading for the vehicles section")
+        headingLabel.font = UIFont(name: "Courier New", size: 24)
         headingLabel.textAlignment = .center
         headingLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -121,9 +121,17 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     func addVehicleEntry(image: UIImage?, vehicleInfo: (make: String, model: String, year: String)) {
         guard let image = image else { return }
         let info = "\(vehicleInfo.make) \(vehicleInfo.model) \(vehicleInfo.year)"
-        savedImages.append((image, info))
+        
+        // Insert the new entry at the beginning of the array
+        savedImages.insert((image, info), at: 0)
+        
+        // Reload the collection view
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
+            
+            // Scroll to the top to show the most recent entry
+            let topIndexPath = IndexPath(item: 0, section: 0)
+            self.collectionView?.scrollToItem(at: topIndexPath, at: .top, animated: true)
         }
     }
     

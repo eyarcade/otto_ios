@@ -161,7 +161,8 @@ class CameraViewController: UIViewController {
             settings.flashMode = .auto
             capturePhotoOutput.capturePhoto(with: settings, delegate: self)
             
-            flashScreen()
+            // Flash screen clashing aesthetically with loading screen
+            // flashScreen()
         
             // Show loading screen after user has captured image
             mainViewController?.showLoadingScreen()

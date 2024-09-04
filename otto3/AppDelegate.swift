@@ -15,6 +15,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
+        // Set default font for UILabel
+        UILabel.appearance().font = UIFont(name: "Courier New", size: 17)
+                
+        // Set default font for UIButton
+        UIButton.appearance().titleLabel?.font = UIFont(name: "Courier New", size: 17)
+                
+        // Set default font for UITextField
+        UITextField.appearance().font = UIFont(name: "Courier New", size: 17)
+                
+        // Set default font for UITextView
+        UITextView.appearance().font = UIFont(name: "Courier New", size: 17)
+        
         // Ensure app starts in portrait mode
         let mainViewController = MainViewController()
         let navigationController = UINavigationController(rootViewController: mainViewController)
