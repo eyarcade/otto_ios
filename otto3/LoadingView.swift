@@ -28,7 +28,10 @@ class LoadingView: UIView {
     }
     
     private func setupView() {
-        backgroundColor = UIColor(white: 0, alpha: 0.7)
+        // backgroundColor = UIColor(white: 0, alpha: 0.7)
+        
+        backgroundColor = UIColor.blue.withAlphaComponent(3.0)
+        
         addSubview(tireImageView)
         tireImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

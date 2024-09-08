@@ -315,21 +315,28 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                         return
                     }
                     
+                    
                     if let data = json["data"] as? [String: Any],
-                       let combinations = data["combinations"] as? [[String: Any]],
-                       let firstCombination = combinations.first,
-                       let roadUsers = firstCombination["roadUsers"] as? [[String: Any]],
-                       let firstRoadUser = roadUsers.first,
-                       let mmr = firstRoadUser["mmr"] as? [String: Any] {
-                        
-                        // Extract the necessary vehicle information
+                        let combinations = data["combinations"] as? [[String: Any]],
+                        let firstCombination = combinations.first,
+                        let roadUsers = firstCombination["roadUsers"] as? [[String: Any]],
+                        let firstRoadUser = roadUsers.first,
+                        let mmr = firstRoadUser["mmr"] as? [String: Any] {
+
                         let make = (mmr["make"] as? [String: Any])?["value"] as? String ?? "Unknown"
                         let model = (mmr["model"] as? [String: Any])?["value"] as? String ?? "Unknown"
                         let year = (mmr["generation"] as? [String: Any])?["value"] as? String ?? "Unknown"
-                        
-                        // Pass the extracted information to the completion handler
-                        completion(.success((make, model, year)))
+
+                        if make == "Unknown" && model == "Unknown" && year == "Unknown" {
+                        // If everything is unknown, most likely not a picture of a vehicle
+                            DispatchQueue.main.async {
+                                self.showErrorAlert(message: "The image is not of a car. Please try again.")
+                            }
+                        } else {
+                            completion(.success((make, model, year)))
+                        }
                     }
+                    
                 }
             } catch {
                 completion(.failure(error))
@@ -337,6 +344,47 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         }
         task.resume()
     }
+    
+    func showErrorAlert(message: String) {
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        
+        // "Try Again" button to retake picture
+        let tryAgainAction = UIAlertAction(title: "Try Again", style: .default) { _ in
+            // Hide loading screen
+            self.mainViewController?.hideLoadingScreen()
+            
+            // Reset camera to retake picture
+            self.resetCameraForRetake()
+        }
+        
+        alertController.addAction(tryAgainAction)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func resetCameraForRetake() {
+
+        if !captureSession.isRunning {
+            captureSession.startRunning()
+        }
+
+        // Reset zoom
+        setZoomFactor(1.0)
+
+        // Reset focus indicator
+        focusIndicator.alpha = 0
+        
+        // Reset pinch zoom gestures
+        setupPinchGesture()
+        
+        // Reset capture button
+        if let captureButton = view.subviews.first(where: { $0 is UIButton }) as? UIButton {
+            captureButton.isEnabled = true
+            captureButton.isHidden = false
+        }
+    }
+
+
+
 
     
 }

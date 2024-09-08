@@ -59,6 +59,7 @@
 		4AA63B302C67C1C300E8154B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4AA63B322C67C1E500E8154B /* PhotoGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewController.swift; sourceTree = "<group>"; };
 		4AA63B342C67C20900E8154B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		4AB3DF4C2C8E1945009E5669 /* spoof.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = spoof.gpx; path = ../../../Desktop/spoof.gpx; sourceTree = "<group>"; };
 		4ABF43702C70E43300940ED7 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		4AD471162C88F67800406765 /* CustomUIComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIComponents.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,6 +92,7 @@
 		4AA63AF22C67C02900E8154B = {
 			isa = PBXGroup;
 			children = (
+				4AB3DF4C2C8E1945009E5669 /* spoof.gpx */,
 				4AA63AFD2C67C02900E8154B /* otto3 */,
 				4AA63B142C67C03200E8154B /* otto3Tests */,
 				4AA63B1E2C67C03200E8154B /* otto3UITests */,
