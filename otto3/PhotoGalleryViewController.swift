@@ -7,19 +7,17 @@
 
 import UIKit
 
-// Custom UICollectionViewCell to display car image and info
 class PhotoGalleryCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         return imageView
     }()
     
-    let infoLabel: CustomLabel = {
-        let label = CustomLabel()
-        //label.font = UIFont.systemFont(ofSize: 14)
+    let infoLabel: GalleryViewBodyLabel = {
+        let label = GalleryViewBodyLabel()
         label.numberOfLines = 0
         label.textAlignment = .left
         label.textColor = .black
@@ -37,11 +35,11 @@ class PhotoGalleryCell: UICollectionViewCell {
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            // ImageView constraints
+            // ImageView constraints - make width a percentage of contentView's width
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            imageView.widthAnchor.constraint(equalToConstant: 100),
+            imageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.20), // 20% of the content view's width
             
             // Label constraints
             infoLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8),
@@ -55,10 +53,11 @@ class PhotoGalleryCell: UICollectionViewCell {
     }
 }
 
+
 class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var collectionView: UICollectionView?
-    var savedImages: [(image: UIImage, info: String)] = [] // Store image with vehicle info
+    var savedEntries: [(logo: UIImage, info: String)] = [] // Store logo with vehicle info
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,9 +66,8 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     }
     
     func setupHeadingLabel() {
-        let headingLabel = CustomLabel()
-        headingLabel.text = NSLocalizedString("VEHICLES", comment: "Heading for the vehicles section")
-        headingLabel.font = UIFont(name: "Courier New", size: 24)
+        let headingLabel = GalleryViewHeadingLabel()
+        headingLabel.text = NSLocalizedString("Vehicles", comment: "Heading for the vehicles section")
         headingLabel.textAlignment = .center
         headingLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -90,7 +88,7 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.register(PhotoGalleryCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView?.backgroundColor = .white
+        collectionView?.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
         
         if let collectionView = collectionView {
@@ -108,24 +106,33 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return savedImages.count
+        return savedEntries.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! PhotoGalleryCell
-        cell.imageView.image = savedImages[indexPath.item].image
-        cell.infoLabel.text = savedImages[indexPath.item].info
+        cell.imageView.image = savedEntries[indexPath.item].logo
+        cell.infoLabel.text = savedEntries[indexPath.item].info
         return cell
     }
 
     func addVehicleEntry(image: UIImage?, vehicleInfo: (make: String, model: String, year: String)) {
-        guard let image = image else { return }
         let info = "\(vehicleInfo.make) \(vehicleInfo.model) \(vehicleInfo.year)"
         
-        // Insert the new entry at the beginning of the array
-        savedImages.insert((image, info), at: 0)
+        // Get logo based on the make using LogoMapping file
+        let image = LogoMapping.getLogo(for: vehicleInfo.make) ?? UIImage(named: "default-logo")
         
-        // Reload the collection view
+        // Safely unwrap the logoImage
+            guard let unwrappedImage = image else {
+                print("Failed to retrieve logo image for: \(vehicleInfo.make)")
+                return
+            }
+        
+        // Safely unwrap image then insert new entry at the beginning of the array
+        savedEntries.insert((logo: unwrappedImage, info: info), at: 0)
+        // savedEntries.insert((logo: image!, info: info), at: 0)
+        
+        // Reload collection view
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
             
@@ -134,6 +141,4 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
             self.collectionView?.scrollToItem(at: topIndexPath, at: .top, animated: true)
         }
     }
-    
-    
 }

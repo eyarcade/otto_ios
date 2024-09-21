@@ -2,9 +2,9 @@
 //  AppDelegate.swift
 //  otto3
 //
-//  Created by Cade on 8/10/24.
+//  Created by Cade + Cooper on 8/10/24.
 //
-
+//aregaerg
 import UIKit
 
 @main
