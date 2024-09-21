@@ -7,7 +7,8 @@
 
 import UIKit
 
-class CustomLabel: UILabel {
+// Cusomt font for loadingView text
+class LoadingViewLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -19,13 +20,43 @@ class CustomLabel: UILabel {
     }
 
     private func commonInit() {
-        self.font = UIFont(name: "Courier New", size: self.font.pointSize)
-        //self.shadowColor = UIColor.green.withAlphaComponent(0.3)
-        //self.shadowOffset = CGSize(width: 1, height: 1)
+        self.font = UIFont(name: "Futura-MediumItalic", size: 24) // Set the specific font for the loading view
     }
-    
-    
 }
+
+// Cusomt font for galleryView text
+class GalleryViewHeadingLabel: UILabel {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+
+    private func commonInit() {
+        self.font = UIFont(name: "Futura-Medium", size: 24) // Set the font for the gallery view
+    }
+}
+
+class GalleryViewBodyLabel: UILabel {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+
+    private func commonInit() {
+        self.font = UIFont(name: "Futura", size: 18) // Set the font for the gallery view
+    }
+}
+
 
 class CustomButton: UIButton {
     override init(frame: CGRect) {

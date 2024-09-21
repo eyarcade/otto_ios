@@ -330,7 +330,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                         if make == "Unknown" && model == "Unknown" && year == "Unknown" {
                         // If everything is unknown, most likely not a picture of a vehicle
                             DispatchQueue.main.async {
-                                self.showErrorAlert(message: "The image is not of a car. Please try again.")
+                                self.showErrorAlert(message: "Please try again.")
                             }
                         } else {
                             completion(.success((make, model, year)))
