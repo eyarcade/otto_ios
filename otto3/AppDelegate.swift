@@ -2,9 +2,9 @@
 //  AppDelegate.swift
 //  otto3
 //
-//  Created by Cade + Cooper on 8/10/24.
-//
-//WORKING
+//  Cade Guerrero-Miranda
+//  Cooper Engebretson
+
 import UIKit
 
 @main

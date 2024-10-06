@@ -2,8 +2,8 @@
 //  MainViewController.swift
 //  otto3
 //
-//  Created by Cade on 8/10/24.
-//
+//  Cade Guerrero-Miranda
+//  Cooper Engebretson
 
 import UIKit
 

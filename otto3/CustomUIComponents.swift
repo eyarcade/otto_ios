@@ -2,8 +2,8 @@
 //  CustomUIComponents.swift
 //  otto3
 //
-//  Created by Cade on 9/4/24.
-//
+//  Cade Guerrero-Miranda
+//  Cooper Engebretson
 
 import UIKit
 
@@ -20,7 +20,7 @@ class LoadingViewLabel: UILabel {
     }
 
     private func commonInit() {
-        self.font = UIFont(name: "Futura-MediumItalic", size: 24) // Set the specific font for the loading view
+        self.font = UIFont(name: "Futura-MediumItalic", size: 24)
     }
 }
 
@@ -37,7 +37,7 @@ class GalleryViewHeadingLabel: UILabel {
     }
 
     private func commonInit() {
-        self.font = UIFont(name: "Futura-Medium", size: 24) // Set the font for the gallery view
+        self.font = UIFont(name: "Futura-Medium", size: 24)
     }
 }
 
@@ -53,7 +53,7 @@ class GalleryViewBodyLabel: UILabel {
     }
 
     private func commonInit() {
-        self.font = UIFont(name: "Futura", size: 18) // Set the font for the gallery view
+        self.font = UIFont(name: "Futura", size: 18)
     }
 }
 

@@ -2,8 +2,8 @@
 //  CameraViewController.swift
 //  otto3
 //
-//  Created by Cade on 8/10/24.
-//
+//  Cade Guerrero-Miranda
+//  Cooper Engebretson
 
 import UIKit
 import AVFoundation
@@ -106,8 +106,12 @@ class CameraViewController: UIViewController {
         previewLayer.frame = view.bounds
         view.layer.addSublayer(previewLayer)
 
-        captureSession.startRunning()
+        // Start the session on a background thread
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.startRunning()
+        }
     }
+
 
     func setupFocusIndicator() {
         let indicatorSize: CGFloat = 100

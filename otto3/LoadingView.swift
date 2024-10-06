@@ -2,8 +2,8 @@
 //  LoadingView.swift
 //  otto3
 //
-//  Created by Cade on 8/31/24.
-//
+//  Cade Guerrero-Miranda
+//  Cooper Engebretson
 
 import UIKit
 import QuartzCore

@@ -2,8 +2,8 @@
 //  LogoMapping.swift
 //  otto3
 //
-//  Created by Cade on 9/15/24.
-//
+//  Cade Guerrero-Miranda
+//  Cooper Engebretson
 
 import UIKit
 

@@ -2,13 +2,12 @@
 //  PhotoGalleryViewController.swift
 //  otto3
 //
-//  Created by Cade on 8/10/24.
-//
+//  Cade Guerrero-Miranda
+//  Cooper Engebretson
 
 import UIKit
 
 class PhotoGalleryCell: UICollectionViewCell {
-    
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -16,8 +15,8 @@ class PhotoGalleryCell: UICollectionViewCell {
         return imageView
     }()
     
-    let infoLabel: GalleryViewBodyLabel = {
-        let label = GalleryViewBodyLabel()
+    let infoLabel: UILabel = {
+        let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .left
         label.textColor = .black
@@ -35,7 +34,7 @@ class PhotoGalleryCell: UICollectionViewCell {
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            // ImageView constraints - make width a percentage of contentView's width
+            // ImageView constraints
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
@@ -53,49 +52,33 @@ class PhotoGalleryCell: UICollectionViewCell {
     }
 }
 
-
 class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var collectionView: UICollectionView?
-    var savedEntries: [(logo: UIImage, info: String)] = [] // Store logo with vehicle info
-
+    var savedEntries: [(logo: UIImage, info: String)] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupHeadingLabel()
         setupCollectionView()
+        setupFooterMenu()
     }
-    
-    func setupHeadingLabel() {
-        let headingLabel = GalleryViewHeadingLabel()
-        headingLabel.text = NSLocalizedString("Vehicles", comment: "Heading for the vehicles section")
-        headingLabel.textAlignment = .center
-        headingLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(headingLabel)
-        
-        NSLayoutConstraint.activate([
-            headingLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            headingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-    }
-    
+
     func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.frame.width, height: 120)
         layout.scrollDirection = .vertical
-        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.register(PhotoGalleryCell.self, forCellWithReuseIdentifier: "cell")
         collectionView?.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
-        
+
         if let collectionView = collectionView {
             view.addSubview(collectionView)
             
             NSLayoutConstraint.activate([
-                collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60),
+                collectionView.topAnchor.constraint(equalTo: view.topAnchor),
                 collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -103,6 +86,38 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         } else {
             print("Collection view failed to initialize")
         }
+    }
+
+    func setupFooterMenu() {
+        let footerView = UIView()
+        footerView.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(footerView)
+
+        let button1 = UIButton(type: .system)
+        button1.setTitle("Filter", for: .normal)
+        button1.translatesAutoresizingMaskIntoConstraints = false
+        footerView.addSubview(button1)
+
+        let button2 = UIButton(type: .system)
+        button2.setTitle("Trash", for: .normal)
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        footerView.addSubview(button2)
+
+        NSLayoutConstraint.activate([
+            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+
+        NSLayoutConstraint.activate([
+            button1.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
+            button1.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
+
+            button2.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
+            button2.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+        ])
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -113,6 +128,19 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! PhotoGalleryCell
         cell.imageView.image = savedEntries[indexPath.item].logo
         cell.infoLabel.text = savedEntries[indexPath.item].info
+
+        // Add a border to the most recent entry (index 0 in the savedEntries array)
+        if indexPath.item == 0 {
+            cell.contentView.layer.borderWidth = 5.0
+            cell.contentView.layer.borderColor = UIColor.black.cgColor
+            cell.contentView.layer.cornerRadius = 20.0
+            cell.contentView.layer.masksToBounds = true
+        } else {
+            cell.contentView.layer.borderWidth = 0.0
+            cell.contentView.layer.borderColor = UIColor.clear.cgColor
+            cell.contentView.layer.cornerRadius = 0.0
+        }
+
         return cell
     }
 
@@ -122,21 +150,16 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         // Get logo based on the make using LogoMapping file
         let image = LogoMapping.getLogo(for: vehicleInfo.make) ?? UIImage(named: "default-logo")
         
-        // Safely unwrap the logoImage
-            guard let unwrappedImage = image else {
-                print("Failed to retrieve logo image for: \(vehicleInfo.make)")
-                return
-            }
+        guard let unwrappedImage = image else {
+            print("Failed to retrieve logo image for: \(vehicleInfo.make)")
+            return
+        }
         
-        // Safely unwrap image then insert new entry at the beginning of the array
+        // Insert the new entry at the start of the array
         savedEntries.insert((logo: unwrappedImage, info: info), at: 0)
-        // savedEntries.insert((logo: image!, info: info), at: 0)
         
-        // Reload collection view
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
-            
-            // Scroll to the top to show the most recent entry
             let topIndexPath = IndexPath(item: 0, section: 0)
             self.collectionView?.scrollToItem(at: topIndexPath, at: .top, animated: true)
         }
